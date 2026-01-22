@@ -17,7 +17,6 @@ type ToolCategory = 'measure' | 'analyze' | 'export' | 'utilities';
 const Tools = () => {
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('measure');
   const { objects } = useAppStore();
-  const [results, setResults] = useState<Record<string, any>>({});
 
   const calculateTotalVolume = () => {
     let totalVolume = 0;

@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Grid, TransformControls } from '@react-three/drei';
+import { OrbitControls, Grid } from '@react-three/drei';
+import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 import ModelingToolbar from './ModelingToolbar';
 import SceneObjects from '../Viewer/SceneObjects';

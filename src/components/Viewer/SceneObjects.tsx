@@ -1,5 +1,3 @@
-import { useRef, useEffect } from 'react';
-import { Mesh, BufferGeometry } from 'three';
 import { useAppStore } from '../../store/useAppStore';
 
 const SceneObjects = () => {

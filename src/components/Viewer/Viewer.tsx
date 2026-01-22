@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Grid, Box, Sphere, Cylinder, Cone } from '@react-three/drei';
+import { OrbitControls, Grid, Cylinder, Cone } from '@react-three/drei';
 import { useAppStore } from '../../store/useAppStore';
 import SceneObjects from './SceneObjects';
 import FileUploader from './FileUploader';

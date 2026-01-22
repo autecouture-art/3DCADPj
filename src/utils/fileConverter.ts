@@ -24,8 +24,6 @@ export const convertCADFile = async (
     // 進捗: 10% - ファイル読み込み開始
     onProgress?.(10);
 
-    // サポートされているフォーマットかチェック
-    const supportedFormats = ['STL', 'OBJ', 'PLY', 'FBX', 'GLTF', 'GLB'];
     const fromUpper = fromFormat.toUpperCase();
     const toUpper = toFormat.toUpperCase();
 
@@ -82,7 +80,7 @@ export const convertCADFile = async (
  */
 const simulateConversion = async (
   file: File,
-  fromFormat: string,
+  _fromFormat: string,
   toFormat: string,
   onProgress?: (progress: number) => void
 ): Promise<ConversionResult> => {

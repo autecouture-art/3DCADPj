@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { STLLoader } from 'three-stdlib';
+import { OBJLoader } from 'three-stdlib';
+import { PLYLoader } from 'three-stdlib';
+import { FBXLoader } from 'three-stdlib';
+import { GLTFLoader } from 'three-stdlib';
 
 export interface LoadedModel {
   geometry?: THREE.BufferGeometry;
@@ -180,6 +180,11 @@ export const loadCADFile = async (file: File): Promise<LoadedModel> => {
     case 'gltf':
     case 'glb':
       return loadGLTF(file);
+    case 'step':
+    case 'stp':
+    case 'iges':
+    case 'igs':
+      throw new Error(`${extension.toUpperCase()}ファイルのサポートは将来の実装予定です。現在はSTL, OBJ, PLY, FBX, glTFをサポートしています。`);
     default:
       throw new Error(`Unsupported file format: ${extension}`);
   }

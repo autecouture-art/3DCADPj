@@ -30,21 +30,26 @@
   - ポリゴン
 
 ### 3. CADファイルコンバーター 🔄
-対応フォーマット:
-- STL (Stereolithography)
-- OBJ (Wavefront)
-- STEP (ISO 10303)
-- IGES (Initial Graphics Exchange)
-- PLY (Polygon File Format)
-- FBX (Filmbox)
-- glTF (GL Transmission Format)
-- DXF (Drawing Exchange Format)
 
-機能:
+#### 現在サポート中のフォーマット ✅
+- **STL** (Stereolithography) - 3Dプリント用標準形式
+- **OBJ** (Wavefront) - 汎用3Dモデル形式
+- **PLY** (Polygon File Format) - 点群・スキャンデータ用
+- **FBX** (Filmbox) - アニメーション対応形式
+- **glTF/GLB** (GL Transmission Format) - Web用3D標準
+
+#### 将来実装予定のフォーマット 🔮
+- **STEP** (ISO 10303) - 産業用CAD標準
+- **IGES** (Initial Graphics Exchange) - CAD交換形式
+- **DXF** (Drawing Exchange Format) - AutoCAD図面形式
+
+*注: STEP/IGES/DXFの実装には opencascade.js が必要ですが、WebAssemblyのビルド統合が複雑なため、将来のバージョンで対応予定です。*
+
+#### 機能
 - 複数フォーマット間の相互変換
-- バッチ変換
-- 変換進捗の表示
+- リアルタイム変換進捗表示
 - 変換履歴の管理
+- ダウンロード機能
 
 ### 4. CADツール 🛠️
 
@@ -65,10 +70,11 @@
 - ドラフト角度解析
 
 #### エクスポートツール
-- STL/OBJ/STEPエクスポート
-- 画像エクスポート
-- アニメーション出力
-- 技術図面出力
+- STL/OBJ/glTFエクスポート（実装済み）
+- PLYエクスポート（実装済み）
+- 画像エクスポート（計画中）
+- アニメーション出力（計画中）
+- 技術図面出力（計画中）
 
 #### ユーティリティ
 - メッシュ修復
@@ -191,12 +197,20 @@ MIT License
 
 ## 今後の開発予定
 
-- [ ] 実際のCADファイルパーサーの実装
-- [ ] より高度なモデリング機能
+### 高優先度
+- [ ] STEP/IGES/DXFファイル対応（opencascade.js統合の改善）
+- [ ] ブーリアン演算の完全実装
+- [ ] 画像・アニメーションエクスポート機能
+
+### 中優先度
+- [ ] より高度なモデリング機能（フィレット、シェル化）
 - [ ] クラウド保存機能
-- [ ] コラボレーション機能
 - [ ] プラグインシステム
+
+### 低優先度
+- [ ] コラボレーション機能
 - [ ] モバイル対応の改善
+- [ ] AR/VRビューアー
 
 ## サポート
 

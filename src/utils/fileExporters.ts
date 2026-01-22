@@ -1,19 +1,22 @@
 import * as THREE from 'three';
-import { STLExporter } from 'three/examples/jsm/exporters/STLExporter';
-import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter';
-import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
+import { STLExporter } from 'three-stdlib';
+import { OBJExporter } from 'three-stdlib';
+import { GLTFExporter } from 'three-stdlib';
 
 /**
  * STL形式でエクスポート
  */
 export const exportSTL = (object: THREE.Object3D, binary: boolean = true): Blob => {
   const exporter = new STLExporter();
-  const result = exporter.parse(object, { binary });
 
   if (binary) {
-    return new Blob([result as ArrayBuffer], { type: 'application/octet-stream' });
+    const result = exporter.parse(object, { binary: true });
+    // DataViewをArrayBufferに変換
+    const arrayBuffer = result.buffer.slice(result.byteOffset, result.byteOffset + result.byteLength) as ArrayBuffer;
+    return new Blob([arrayBuffer], { type: 'application/octet-stream' });
   } else {
-    return new Blob([result as string], { type: 'text/plain' });
+    const result = exporter.parse(object, { binary: false });
+    return new Blob([result], { type: 'text/plain' });
   }
 };
 
