@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useAppStore } from '../../store/useAppStore';
+import { loadCADFile } from '../../utils/fileLoaders';
 import './FileUploader.css';
 
 const FileUploader = () => {
@@ -11,6 +12,9 @@ const FileUploader = () => {
     if (!file) return;
 
     try {
+      // 実際にCADファイルを読み込む
+      const loadedModel = await loadCADFile(file);
+
       const arrayBuffer = await file.arrayBuffer();
 
       setLoadedFile({
@@ -19,27 +23,32 @@ const FileUploader = () => {
         data: arrayBuffer
       });
 
-      // デモ用: ファイルが読み込まれたら新しいオブジェクトを追加
+      // 読み込んだ3Dモデルをシーンに追加
       const newObject = {
         id: `obj-${Date.now()}`,
         name: file.name,
         type: 'mesh' as const,
         geometry: {
-          vertices: [],
-          indices: []
+          vertices: loadedModel.geometry?.attributes.position?.array
+            ? Array.from(loadedModel.geometry.attributes.position.array)
+            : [],
+          indices: loadedModel.geometry?.index?.array
+            ? Array.from(loadedModel.geometry.index.array)
+            : []
         },
         position: [0, 0, 0] as [number, number, number],
         rotation: [0, 0, 0] as [number, number, number],
         scale: [1, 1, 1] as [number, number, number],
         visible: true,
-        color: '#4CAF50'
+        color: '#4CAF50',
+        mesh: loadedModel.mesh // Three.jsメッシュオブジェクトを保持
       };
 
       addObject(newObject);
-      alert(`ファイル "${file.name}" を読み込みました！`);
+      alert(`ファイル "${file.name}" を正常に読み込みました！`);
     } catch (error) {
       console.error('File upload error:', error);
-      alert('ファイルの読み込みに失敗しました');
+      alert(`ファイルの読み込みに失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`);
     }
 
     if (fileInputRef.current) {
@@ -52,7 +61,7 @@ const FileUploader = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".stl,.obj,.step,.iges,.stp,.igs"
+        accept=".stl,.obj,.ply,.fbx,.gltf,.glb,.step,.iges,.stp,.igs,.dxf"
         onChange={handleFileUpload}
         style={{ display: 'none' }}
         id="file-input"

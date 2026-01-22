@@ -37,4 +37,5 @@ export interface CADObject {
   scale: [number, number, number];
   visible: boolean;
   color: string;
+  mesh?: any; // Three.js Mesh or Group object
 }

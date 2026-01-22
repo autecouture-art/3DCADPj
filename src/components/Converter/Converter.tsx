@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { convertCADFile } from '../../utils/fileConverter';
 import './Converter.css';
 
 interface ConversionJob {
@@ -9,6 +10,9 @@ interface ConversionJob {
   status: 'pending' | 'converting' | 'completed' | 'error';
   progress: number;
   outputData?: ArrayBuffer | string;
+  outputBlob?: Blob;
+  outputFileName?: string;
+  error?: string;
 }
 
 const Converter = () => {
@@ -60,44 +64,54 @@ const Converter = () => {
 
     setJobs(prev => [newJob, ...prev]);
 
-    // シミュレートされた変換プロセス
-    setTimeout(() => {
+    // 実際の変換プロセス
+    try {
       setJobs(prev => prev.map(job =>
         job.id === newJob.id ? { ...job, status: 'converting' as const } : job
       ));
 
-      // 進捗シミュレーション
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        setJobs(prev => prev.map(job =>
-          job.id === newJob.id ? { ...job, progress } : job
-        ));
-
-        if (progress >= 100) {
-          clearInterval(interval);
+      const result = await convertCADFile(
+        selectedFile,
+        fromFormat,
+        toFormat,
+        (progress) => {
           setJobs(prev => prev.map(job =>
-            job.id === newJob.id ? {
-              ...job,
-              status: 'completed' as const,
-              progress: 100,
-              outputData: new ArrayBuffer(0)
-            } : job
+            job.id === newJob.id ? { ...job, progress } : job
           ));
         }
-      }, 200);
-    }, 500);
+      );
+
+      setJobs(prev => prev.map(job =>
+        job.id === newJob.id ? {
+          ...job,
+          status: 'completed' as const,
+          progress: 100,
+          outputBlob: result.blob,
+          outputFileName: result.fileName
+        } : job
+      ));
+    } catch (error) {
+      console.error('Conversion error:', error);
+      setJobs(prev => prev.map(job =>
+        job.id === newJob.id ? {
+          ...job,
+          status: 'error' as const,
+          error: error instanceof Error ? error.message : '変換に失敗しました'
+        } : job
+      ));
+    }
   };
 
   const handleDownload = (job: ConversionJob) => {
-    if (job.status !== 'completed') return;
+    if (job.status !== 'completed' || !job.outputBlob) return;
 
-    const blob = new Blob([new Uint8Array(0)], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(job.outputBlob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${job.fileName.split('.')[0]}_converted.${job.toFormat.toLowerCase()}`;
+    a.download = job.outputFileName || `${job.fileName.split('.')[0]}_converted.${job.toFormat.toLowerCase()}`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
