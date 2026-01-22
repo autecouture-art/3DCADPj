@@ -4,6 +4,8 @@ import { OBJLoader } from 'three-stdlib';
 import { PLYLoader } from 'three-stdlib';
 import { FBXLoader } from 'three-stdlib';
 import { GLTFLoader } from 'three-stdlib';
+import { loadSTEPFile } from './stepLoader';
+import { isSolidWorksFile, showSolidWorksConversionGuide } from './solidworksHandler';
 
 export interface LoadedModel {
   geometry?: THREE.BufferGeometry;
@@ -168,6 +170,15 @@ export const loadGLTF = async (file: File): Promise<LoadedModel> => {
 export const loadCADFile = async (file: File): Promise<LoadedModel> => {
   const extension = file.name.split('.').pop()?.toLowerCase();
 
+  // SolidWorksファイルの検出
+  if (isSolidWorksFile(file.name)) {
+    showSolidWorksConversionGuide(file);
+    throw new Error(
+      'SolidWorksファイルは直接読み込めません。' +
+      'SolidWorksでSTEP形式にエクスポートしてから、STEPファイルをアップロードしてください。'
+    );
+  }
+
   switch (extension) {
     case 'stl':
       return loadSTL(file);
@@ -182,10 +193,15 @@ export const loadCADFile = async (file: File): Promise<LoadedModel> => {
       return loadGLTF(file);
     case 'step':
     case 'stp':
+      const stepMesh = await loadSTEPFile(file);
+      return { mesh: stepMesh };
     case 'iges':
     case 'igs':
-      throw new Error(`${extension.toUpperCase()}ファイルのサポートは将来の実装予定です。現在はSTL, OBJ, PLY, FBX, glTFをサポートしています。`);
+      throw new Error(
+        'IGESファイルのサポートは現在開発中です。' +
+        '代わりにSTEP形式での保存を推奨します。'
+      );
     default:
-      throw new Error(`Unsupported file format: ${extension}`);
+      throw new Error(`サポートされていないファイル形式です: ${extension}`);
   }
 };

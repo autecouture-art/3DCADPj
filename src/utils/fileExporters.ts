@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { STLExporter } from 'three-stdlib';
 import { OBJExporter } from 'three-stdlib';
 import { GLTFExporter } from 'three-stdlib';
+import { exportSTEP } from './stepLoader';
 
 /**
  * STL形式でエクスポート
@@ -141,6 +142,12 @@ export const exportCADFile = async (
       return exportGLTF(object, true);
     case 'PLY':
       return exportPLY(object);
+    case 'STEP':
+    case 'STP':
+      if (object instanceof THREE.Mesh || object instanceof THREE.Group) {
+        return exportSTEP(object);
+      }
+      throw new Error('STEP export requires Mesh or Group object');
     default:
       throw new Error(`Unsupported export format: ${format}`);
   }

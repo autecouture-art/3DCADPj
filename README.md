@@ -31,19 +31,27 @@
 
 ### 3. CADファイルコンバーター 🔄
 
-#### 現在サポート中のフォーマット ✅
+#### 完全サポート ✅
 - **STL** (Stereolithography) - 3Dプリント用標準形式
 - **OBJ** (Wavefront) - 汎用3Dモデル形式
 - **PLY** (Polygon File Format) - 点群・スキャンデータ用
 - **FBX** (Filmbox) - アニメーション対応形式
 - **glTF/GLB** (GL Transmission Format) - Web用3D標準
 
-#### 将来実装予定のフォーマット 🔮
+#### 基本サポート（読み込み＆エクスポート） ⚡
 - **STEP** (ISO 10303) - 産業用CAD標準
+  - 基本的なSTEPファイルの読み込みとエクスポートに対応
+  - 複雑な形状は簡略化される場合があります
+
+#### SolidWorksファイル対応 📋
+- **SolidWorksファイル** (.sldprt, .sldasm, .slddrw)
+  - 直接読み込みは不可（プロプライエタリ形式のため）
+  - **推奨**: SolidWorksでSTEP形式にエクスポート後、アップロード
+  - アプリ内で変換ガイドを表示
+
+#### 開発中 🔮
 - **IGES** (Initial Graphics Exchange) - CAD交換形式
 - **DXF** (Drawing Exchange Format) - AutoCAD図面形式
-
-*注: STEP/IGES/DXFの実装には opencascade.js が必要ですが、WebAssemblyのビルド統合が複雑なため、将来のバージョンで対応予定です。*
 
 #### 機能
 - 複数フォーマット間の相互変換
@@ -70,8 +78,7 @@
 - ドラフト角度解析
 
 #### エクスポートツール
-- STL/OBJ/glTFエクスポート（実装済み）
-- PLYエクスポート（実装済み）
+- **STL/OBJ/glTF/PLY/STEPエクスポート** ✅ 実装済み
 - 画像エクスポート（計画中）
 - アニメーション出力（計画中）
 - 技術図面出力（計画中）
