@@ -1,0 +1,53 @@
+.modeling-toolbar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 300px;
+  z-index: 10;
+}
+
+.tool-section {
+  margin-bottom: 16px;
+}
+
+.tool-section:last-child {
+  margin-bottom: 0;
+}
+
+.tool-section h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.tool-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.tool-btn {
+  padding: 8px 12px;
+  background: #3d3d3d;
+  border: 1px solid #505050;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.tool-btn:hover {
+  background: #4CAF50;
+  border-color: #4CAF50;
+  transform: translateY(-1px);
+}
+
+.tool-btn:active {
+  transform: translateY(0);
+}

@@ -1,0 +1,300 @@
+.converter {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  background: #1a1a1a;
+}
+
+.converter-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.converter-panel,
+.jobs-panel {
+  background: #252525;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.converter-panel h2,
+.jobs-panel h3 {
+  margin: 0 0 20px 0;
+  color: #4CAF50;
+}
+
+.conversion-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.file-select-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-select-btn {
+  padding: 12px 20px;
+  background: #3d3d3d;
+  border: 2px dashed #505050;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.file-select-btn:hover {
+  background: #4d4d4d;
+  border-color: #4CAF50;
+}
+
+.selected-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #2d2d2d;
+  border-radius: 4px;
+}
+
+.file-icon {
+  font-size: 24px;
+}
+
+.file-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.file-size {
+  color: #888;
+  font-size: 12px;
+}
+
+.format-selectors {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.format-selector {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.format-selector label {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.format-selector select {
+  padding: 10px;
+  background: #2d2d2d;
+  border: 1px solid #505050;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.format-arrow {
+  font-size: 24px;
+  color: #4CAF50;
+  margin-top: 20px;
+}
+
+.convert-btn {
+  padding: 12px 24px;
+  background: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.convert-btn:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.convert-btn:disabled {
+  background: #3d3d3d;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.supported-formats {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #404040;
+}
+
+.supported-formats h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.format-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.format-badge {
+  padding: 4px 12px;
+  background: #3d3d3d;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #4CAF50;
+}
+
+.jobs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.jobs-header h3 {
+  margin: 0;
+}
+
+.clear-btn {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid #505050;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-btn:hover {
+  background: #d32f2f;
+  border-color: #d32f2f;
+}
+
+.jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.empty-jobs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #888;
+}
+
+.job-item {
+  padding: 16px;
+  background: #2d2d2d;
+  border-radius: 4px;
+  border-left: 4px solid #505050;
+}
+
+.job-item.converting {
+  border-left-color: #2196F3;
+}
+
+.job-item.completed {
+  border-left-color: #4CAF50;
+}
+
+.job-item.error {
+  border-left-color: #d32f2f;
+}
+
+.job-info {
+  margin-bottom: 12px;
+}
+
+.job-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.job-conversion {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.job-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.pending {
+  background: #3d3d3d;
+  color: #aaa;
+}
+
+.status-badge.completed {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+
+.status-badge.error {
+  background: rgba(211, 47, 47, 0.2);
+  color: #d32f2f;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #3d3d3d;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #2196F3;
+  transition: width 0.3s;
+}
+
+.status-text {
+  font-size: 12px;
+  color: #2196F3;
+  min-width: 40px;
+}
+
+.download-btn {
+  padding: 6px 12px;
+  background: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.download-btn:hover {
+  background: #45a049;
+}
