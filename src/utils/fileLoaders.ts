@@ -6,6 +6,7 @@ import { FBXLoader } from 'three-stdlib';
 import { GLTFLoader } from 'three-stdlib';
 import { loadSTEPFile } from './stepLoader';
 import { isSolidWorksFile, showSolidWorksConversionGuide } from './solidworksHandler';
+import { isEDrawingsFile, showEDrawingsConversionGuide } from './edrawingsHandler';
 
 export interface LoadedModel {
   geometry?: THREE.BufferGeometry;
@@ -176,6 +177,15 @@ export const loadCADFile = async (file: File): Promise<LoadedModel> => {
     throw new Error(
       'SolidWorksファイルは直接読み込めません。' +
       'SolidWorksでSTEP形式にエクスポートしてから、STEPファイルをアップロードしてください。'
+    );
+  }
+
+  // eDrawingsファイルの検出
+  if (isEDrawingsFile(file.name)) {
+    showEDrawingsConversionGuide(file);
+    throw new Error(
+      'eDrawingsファイルは直接読み込めません。' +
+      'eDrawings ViewerまたはCADソフトウェアでSTEP形式にエクスポートしてから、STEPファイルをアップロードしてください。'
     );
   }
 

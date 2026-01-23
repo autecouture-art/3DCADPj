@@ -61,7 +61,7 @@ const FileUploader = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".stl,.obj,.ply,.fbx,.gltf,.glb,.step,.iges,.stp,.igs,.dxf,.sldprt,.sldasm,.slddrw"
+        accept=".stl,.obj,.ply,.fbx,.gltf,.glb,.step,.iges,.stp,.igs,.dxf,.sldprt,.sldasm,.slddrw,.eprt,.easm,.edrw,.edrawings"
         onChange={handleFileUpload}
         style={{ display: 'none' }}
         id="file-input"

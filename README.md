@@ -49,6 +49,12 @@
   - **推奨**: SolidWorksでSTEP形式にエクスポート後、アップロード
   - アプリ内で変換ガイドを表示
 
+#### eDrawingsファイル対応 📐
+- **eDrawingsファイル** (.eprt, .easm, .edrw, .edrawings)
+  - 直接読み込みは不可（プロプライエタリ形式のため）
+  - **推奨**: eDrawings Viewerまたは元のCADソフトウェアでSTEP形式にエクスポート後、アップロード
+  - アプリ内で変換ガイドを表示
+
 #### 開発中 🔮
 - **IGES** (Initial Graphics Exchange) - CAD交換形式
 - **DXF** (Drawing Exchange Format) - AutoCAD図面形式
