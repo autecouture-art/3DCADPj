@@ -3,6 +3,7 @@ import { OrbitControls, Grid, Cylinder, Cone } from '@react-three/drei';
 import { useAppStore } from '../../store/useAppStore';
 import SceneObjects from './SceneObjects';
 import FileUploader from './FileUploader';
+import SampleLoader from './SampleLoader';
 import './Viewer.css';
 
 const Viewer = () => {
@@ -11,6 +12,7 @@ const Viewer = () => {
   return (
     <div className="viewer">
       <FileUploader />
+      <SampleLoader />
       <Canvas
         camera={{ position: [5, 5, 5], fov: 50 }}
         style={{ background: '#1a1a1a' }}

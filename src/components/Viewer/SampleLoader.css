@@ -1,0 +1,59 @@
+.sample-loader {
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(45, 45, 45, 0.5);
+  border-radius: 8px;
+  border: 1px solid #404040;
+}
+
+.sample-title {
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.sample-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sample-btn {
+  padding: 10px 16px;
+  background: #3a3a3a;
+  color: #ffffff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.sample-btn:hover {
+  background: #4a4a4a;
+  border-color: #4CAF50;
+  transform: translateY(-2px);
+}
+
+.sample-btn:active {
+  transform: translateY(0);
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .sample-loader {
+    padding: 10px;
+  }
+
+  .sample-title {
+    font-size: 13px;
+  }
+
+  .sample-btn {
+    font-size: 13px;
+    padding: 12px 14px;
+    min-width: 100px;
+  }
+}
