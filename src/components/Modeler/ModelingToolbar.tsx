@@ -3,19 +3,17 @@ import { geometryCreators } from '../../utils/geometryCreators';
 import './ModelingToolbar.css';
 
 const ModelingToolbar = () => {
-  const { addObject } = useAppStore();
+  const { addObject, selectObject } = useAppStore();
 
   const createGeometry = (type: keyof typeof geometryCreators) => {
     const newObject = geometryCreators[type]();
 
-    // ランダムな位置に配置
-    newObject.position = [
-      Math.random() * 4 - 2,
-      Math.random() * 2 + 1,
-      Math.random() * 4 - 2
-    ];
+    // 中心（原点）に配置
+    newObject.position = [0, 0, 0];
 
     addObject(newObject);
+    // 作成したオブジェクトを自動選択
+    selectObject(newObject.id);
   };
 
   return (

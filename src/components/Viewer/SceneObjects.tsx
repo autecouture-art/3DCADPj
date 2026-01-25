@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 
 const SceneObjects = () => {
@@ -13,10 +14,30 @@ const SceneObjects = () => {
 
         // 読み込んだメッシュがある場合はそれを使用
         if (obj.mesh) {
+          const clonedMesh = obj.mesh.clone();
+
+          // 色を更新
+          clonedMesh.traverse((child: THREE.Object3D) => {
+            if (child instanceof THREE.Mesh) {
+              if (child.material) {
+                const material = child.material.clone();
+                if (isSelected) {
+                  material.emissive = new THREE.Color(0x444444);
+                  material.emissiveIntensity = 0.5;
+                } else {
+                  material.color = new THREE.Color(obj.color);
+                  material.emissive = new THREE.Color(0x000000);
+                  material.emissiveIntensity = 0;
+                }
+                child.material = material;
+              }
+            }
+          });
+
           return (
             <primitive
               key={obj.id}
-              object={obj.mesh.clone()}
+              object={clonedMesh}
               position={obj.position}
               rotation={obj.rotation}
               scale={obj.scale}
@@ -42,8 +63,9 @@ const SceneObjects = () => {
           >
             <boxGeometry args={[1, 1, 1]} />
             <meshStandardMaterial
-              color={isSelected ? '#ffff00' : obj.color}
-              wireframe={isSelected}
+              color={obj.color}
+              emissive={isSelected ? 0x444444 : 0x000000}
+              emissiveIntensity={isSelected ? 0.5 : 0}
             />
           </mesh>
         );

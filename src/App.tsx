@@ -7,6 +7,7 @@ import Modeler from './components/Modeler/Modeler';
 import Converter from './components/Converter/Converter';
 import Tools from './components/Tools/Tools';
 import PasswordAuth from './components/Auth/PasswordAuth';
+import PropertiesPanel from './components/Properties/PropertiesPanel';
 import { getDeviceInfo, shouldUseViewerMode, logDeviceInfo } from './utils/deviceDetection';
 import './App.css';
 
@@ -82,6 +83,8 @@ function App() {
         <div className="main-content">
           {renderContent()}
         </div>
+        {/* プロパティパネル（モデラーモードでのみ表示） */}
+        {!isMobileDevice && mode === 'modeler' && <PropertiesPanel />}
       </div>
     </div>
   );
