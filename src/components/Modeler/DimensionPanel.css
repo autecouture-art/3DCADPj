@@ -1,0 +1,283 @@
+.dimension-panel {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 320px;
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.panel-header {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  padding: 12px 16px;
+  border-bottom: 1px solid #404040;
+}
+
+.panel-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-content {
+  padding: 16px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.no-selection {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.selected-entity-info {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.info-row .label {
+  color: #888;
+  font-weight: 500;
+}
+
+.info-row .value {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.dimensions-list {
+  margin-top: 16px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #404040;
+}
+
+.list-header span {
+  color: #ccc;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.add-dimension-btn {
+  padding: 6px 12px;
+  background: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-dimension-btn:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+}
+
+.no-dimensions {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.dimension-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dimension-item {
+  background: #1a1a1a;
+  border: 1px solid #404040;
+  border-radius: 6px;
+  padding: 10px;
+  transition: all 0.2s ease;
+}
+
+.dimension-item:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
+}
+
+.dimension-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.dimension-label {
+  color: #4CAF50;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+.dimension-type {
+  color: #888;
+  font-size: 12px;
+}
+
+.dimension-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.value-number {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.dimension-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.edit-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-btn {
+  background: #2196F3;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background: #1976D2;
+  transform: scale(1.1);
+}
+
+.delete-btn {
+  background: #f44336;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background: #d32f2f;
+  transform: scale(1.1);
+}
+
+.dimension-edit {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dimension-edit input {
+  flex: 1;
+  padding: 6px 10px;
+  background: #1a1a1a;
+  border: 2px solid #4CAF50;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.dimension-edit input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.save-btn {
+  background: #4CAF50;
+  color: #fff;
+  padding: 6px 12px;
+  font-weight: 600;
+}
+
+.save-btn:hover {
+  background: #45a049;
+}
+
+.cancel-btn {
+  background: #666;
+  color: #fff;
+  padding: 6px 12px;
+}
+
+.cancel-btn:hover {
+  background: #555;
+}
+
+.panel-hint {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #404040;
+}
+
+.panel-hint p {
+  margin: 0;
+  color: #888;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* スクロールバーのスタイル */
+.panel-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel-content::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+  background: #4CAF50;
+  border-radius: 3px;
+}
+
+.panel-content::-webkit-scrollbar-thumb:hover {
+  background: #45a049;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .dimension-panel {
+    width: calc(100% - 40px);
+    right: 20px;
+    left: 20px;
+  }
+}

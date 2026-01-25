@@ -1,30 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
+import { Point, SketchEntity, LineEntity, RectangleEntity, CircleEntity } from '../../types/sketch';
 import SketchToolbar from './SketchToolbar';
+import DimensionPanel from './DimensionPanel';
 import './SketchCanvas.css';
 
 type SketchTool = 'select' | 'line' | 'rectangle' | 'circle';
 
-interface Point {
-  x: number;
-  y: number;
-}
-
-interface SketchEntity {
-  id: string;
-  type: 'line' | 'rectangle' | 'circle';
-  points: Point[];
-  radius?: number;
-}
-
 const SketchCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { selectedPlane, exitSketchMode, addSketchEntity } = useAppStore();
+  const {
+    selectedPlane,
+    exitSketchMode,
+    addSketchEntity,
+    sketchEntities,
+    dimensionConstraints,
+    selectedEntityId,
+    selectSketchEntity
+  } = useAppStore();
   const [currentTool, setCurrentTool] = useState<SketchTool>('select');
   const [isDrawing, setIsDrawing] = useState(false);
   const [startPoint, setStartPoint] = useState<Point | null>(null);
   const [currentPoint, setCurrentPoint] = useState<Point | null>(null);
-  const [entities, setEntities] = useState<SketchEntity[]>([]);
 
   // キャンバスのセットアップ
   useEffect(() => {
@@ -44,11 +41,14 @@ const SketchCanvas = () => {
     // エンティティを描画
     drawEntities(ctx);
 
+    // 寸法を描画
+    drawDimensions(ctx);
+
     // 現在の描画中のプレビューを表示
     if (isDrawing && startPoint && currentPoint) {
       drawPreview(ctx);
     }
-  }, [entities, isDrawing, startPoint, currentPoint, currentTool]);
+  }, [sketchEntities, dimensionConstraints, selectedEntityId, isDrawing, startPoint, currentPoint, currentTool]);
 
   const drawGrid = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
     const gridSize = 20;
@@ -94,36 +94,110 @@ const SketchCanvas = () => {
   };
 
   const drawEntities = (ctx: CanvasRenderingContext2D) => {
-    ctx.strokeStyle = '#4CAF50';
-    ctx.lineWidth = 2;
+    sketchEntities.forEach(entity => {
+      const isSelected = entity.id === selectedEntityId;
+      ctx.strokeStyle = isSelected ? '#FFC107' : '#4CAF50';
+      ctx.lineWidth = isSelected ? 3 : 2;
 
-    entities.forEach(entity => {
       switch (entity.type) {
-        case 'line':
-          if (entity.points.length === 2) {
-            ctx.beginPath();
-            ctx.moveTo(entity.points[0].x, entity.points[0].y);
-            ctx.lineTo(entity.points[1].x, entity.points[1].y);
-            ctx.stroke();
-          }
-          break;
+        case 'line': {
+          const lineEntity = entity as LineEntity;
+          ctx.beginPath();
+          ctx.moveTo(lineEntity.start.x, lineEntity.start.y);
+          ctx.lineTo(lineEntity.end.x, lineEntity.end.y);
+          ctx.stroke();
 
-        case 'rectangle':
-          if (entity.points.length === 2) {
-            const width = entity.points[1].x - entity.points[0].x;
-            const height = entity.points[1].y - entity.points[0].y;
-            ctx.strokeRect(entity.points[0].x, entity.points[0].y, width, height);
+          // 選択時は端点を表示
+          if (isSelected) {
+            drawPoint(ctx, lineEntity.start);
+            drawPoint(ctx, lineEntity.end);
           }
           break;
+        }
 
-        case 'circle':
-          if (entity.points.length === 2 && entity.radius) {
-            ctx.beginPath();
-            ctx.arc(entity.points[0].x, entity.points[0].y, entity.radius, 0, Math.PI * 2);
-            ctx.stroke();
+        case 'rectangle': {
+          const rectEntity = entity as RectangleEntity;
+          const width = rectEntity.end.x - rectEntity.start.x;
+          const height = rectEntity.end.y - rectEntity.start.y;
+          ctx.strokeRect(rectEntity.start.x, rectEntity.start.y, width, height);
+
+          // 選択時は角点を表示
+          if (isSelected) {
+            drawPoint(ctx, rectEntity.start);
+            drawPoint(ctx, rectEntity.end);
+            drawPoint(ctx, { x: rectEntity.start.x, y: rectEntity.end.y });
+            drawPoint(ctx, { x: rectEntity.end.x, y: rectEntity.start.y });
           }
           break;
+        }
+
+        case 'circle': {
+          const circleEntity = entity as CircleEntity;
+          ctx.beginPath();
+          ctx.arc(circleEntity.center.x, circleEntity.center.y, circleEntity.radius, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // 選択時は中心点を表示
+          if (isSelected) {
+            drawPoint(ctx, circleEntity.center);
+          }
+          break;
+        }
       }
+    });
+  };
+
+  const drawPoint = (ctx: CanvasRenderingContext2D, point: Point) => {
+    ctx.fillStyle = '#FFC107';
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  const drawDimensions = (ctx: CanvasRenderingContext2D) => {
+    ctx.font = '14px monospace';
+    ctx.fillStyle = '#2196F3';
+    ctx.strokeStyle = '#2196F3';
+    ctx.lineWidth = 1;
+
+    dimensionConstraints.forEach(constraint => {
+      const entity = sketchEntities.find(e => e.id === constraint.entityId);
+      if (!entity) return;
+
+      let displayText = `${constraint.label}: ${constraint.value.toFixed(2)}`;
+      let textX = 0;
+      let textY = 0;
+
+      if (entity.type === 'line') {
+        const lineEntity = entity as LineEntity;
+        const midX = (lineEntity.start.x + lineEntity.end.x) / 2;
+        const midY = (lineEntity.start.y + lineEntity.end.y) / 2;
+        textX = midX + 10;
+        textY = midY - 10;
+      } else if (entity.type === 'circle') {
+        const circleEntity = entity as CircleEntity;
+        textX = circleEntity.center.x + circleEntity.radius + 10;
+        textY = circleEntity.center.y - 10;
+      } else if (entity.type === 'rectangle') {
+        const rectEntity = entity as RectangleEntity;
+        textX = rectEntity.start.x + 10;
+        textY = rectEntity.start.y - 10;
+      }
+
+      // 寸法テキストの背景
+      const metrics = ctx.measureText(displayText);
+      const padding = 4;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(
+        textX - padding,
+        textY - 14 - padding,
+        metrics.width + padding * 2,
+        16 + padding * 2
+      );
+
+      // 寸法テキスト
+      ctx.fillStyle = '#2196F3';
+      ctx.fillText(displayText, textX, textY);
     });
   };
 
@@ -163,8 +237,6 @@ const SketchCanvas = () => {
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (currentTool === 'select') return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -172,8 +244,70 @@ const SketchCanvas = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    if (currentTool === 'select') {
+      // エンティティ選択モード
+      const clickedEntity = findEntityAtPoint({ x, y });
+      selectSketchEntity(clickedEntity?.id || null);
+      return;
+    }
+
     setStartPoint({ x, y });
     setIsDrawing(true);
+  };
+
+  const findEntityAtPoint = (point: Point): SketchEntity | null => {
+    const tolerance = 10;
+
+    for (const entity of sketchEntities) {
+      if (entity.type === 'line') {
+        const lineEntity = entity as LineEntity;
+        if (isPointNearLine(point, lineEntity.start, lineEntity.end, tolerance)) {
+          return entity;
+        }
+      } else if (entity.type === 'circle') {
+        const circleEntity = entity as CircleEntity;
+        const distance = Math.sqrt(
+          Math.pow(point.x - circleEntity.center.x, 2) +
+          Math.pow(point.y - circleEntity.center.y, 2)
+        );
+        if (Math.abs(distance - circleEntity.radius) < tolerance) {
+          return entity;
+        }
+      } else if (entity.type === 'rectangle') {
+        const rectEntity = entity as RectangleEntity;
+        const minX = Math.min(rectEntity.start.x, rectEntity.end.x);
+        const maxX = Math.max(rectEntity.start.x, rectEntity.end.x);
+        const minY = Math.min(rectEntity.start.y, rectEntity.end.y);
+        const maxY = Math.max(rectEntity.start.y, rectEntity.end.y);
+
+        // 矩形の4辺をチェック
+        if (
+          isPointNearLine(point, { x: minX, y: minY }, { x: maxX, y: minY }, tolerance) ||
+          isPointNearLine(point, { x: maxX, y: minY }, { x: maxX, y: maxY }, tolerance) ||
+          isPointNearLine(point, { x: maxX, y: maxY }, { x: minX, y: maxY }, tolerance) ||
+          isPointNearLine(point, { x: minX, y: maxY }, { x: minX, y: minY }, tolerance)
+        ) {
+          return entity;
+        }
+      }
+    }
+
+    return null;
+  };
+
+  const isPointNearLine = (point: Point, lineStart: Point, lineEnd: Point, tolerance: number): boolean => {
+    const dx = lineEnd.x - lineStart.x;
+    const dy = lineEnd.y - lineStart.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+
+    if (length === 0) return false;
+
+    const t = Math.max(0, Math.min(1, ((point.x - lineStart.x) * dx + (point.y - lineStart.y) * dy) / (length * length)));
+    const projX = lineStart.x + t * dx;
+    const projY = lineStart.y + t * dy;
+    const distance = Math.sqrt(Math.pow(point.x - projX, 2) + Math.pow(point.y - projY, 2));
+
+    return distance < tolerance;
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -202,21 +336,43 @@ const SketchCanvas = () => {
     const endPoint = { x, y };
 
     // 新しいエンティティを作成
-    const newEntity: SketchEntity = {
-      id: `entity-${Date.now()}`,
-      type: currentTool as 'line' | 'rectangle' | 'circle',
-      points: [startPoint, endPoint],
-    };
+    let newEntity: SketchEntity;
 
-    // 円の場合は半径を計算
-    if (currentTool === 'circle') {
-      newEntity.radius = Math.sqrt(
+    if (currentTool === 'line') {
+      newEntity = {
+        id: `entity-${Date.now()}-${Math.random()}`,
+        type: 'line',
+        start: startPoint,
+        end: endPoint,
+        constraints: []
+      } as LineEntity;
+    } else if (currentTool === 'circle') {
+      const radius = Math.sqrt(
         Math.pow(endPoint.x - startPoint.x, 2) +
         Math.pow(endPoint.y - startPoint.y, 2)
       );
+      newEntity = {
+        id: `entity-${Date.now()}-${Math.random()}`,
+        type: 'circle',
+        center: startPoint,
+        radius,
+        constraints: []
+      } as CircleEntity;
+    } else if (currentTool === 'rectangle') {
+      newEntity = {
+        id: `entity-${Date.now()}-${Math.random()}`,
+        type: 'rectangle',
+        start: startPoint,
+        end: endPoint,
+        constraints: []
+      } as RectangleEntity;
+    } else {
+      setIsDrawing(false);
+      setStartPoint(null);
+      setCurrentPoint(null);
+      return;
     }
 
-    setEntities([...entities, newEntity]);
     addSketchEntity(newEntity);
 
     setIsDrawing(false);
@@ -256,6 +412,9 @@ const SketchCanvas = () => {
         />
       </div>
 
+      {/* 寸法パネル */}
+      <DimensionPanel />
+
       <div className="sketch-info">
         <div className="info-row">
           <span className="info-label">平面:</span>
@@ -272,7 +431,11 @@ const SketchCanvas = () => {
         </div>
         <div className="info-row">
           <span className="info-label">エンティティ数:</span>
-          <span className="info-value">{entities.length}</span>
+          <span className="info-value">{sketchEntities.length}</span>
+        </div>
+        <div className="info-row">
+          <span className="info-label">寸法数:</span>
+          <span className="info-value">{dimensionConstraints.length}</span>
         </div>
       </div>
     </div>
