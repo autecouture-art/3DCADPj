@@ -1,0 +1,312 @@
+.extrude-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.extrude-dialog {
+  background: #2d2d2d;
+  border: 2px solid #4CAF50;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #404040;
+}
+
+.dialog-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dialog-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.sketch-info-section {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.sketch-info-section .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.sketch-info-section .info-row:last-child {
+  margin-bottom: 0;
+}
+
+.sketch-info-section .label {
+  color: #888;
+  font-weight: 500;
+}
+
+.sketch-info-section .value {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.extrude-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.setting-group label {
+  color: #ccc;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.depth-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.depth-input-group input[type="number"] {
+  flex: 1;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border: 2px solid #404040;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  transition: border-color 0.2s ease;
+}
+
+.depth-input-group input[type="number"]:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.depth-input-group .unit {
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 30px;
+}
+
+.depth-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #404040;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.depth-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.depth-slider::-webkit-slider-thumb:hover {
+  background: #45a049;
+  transform: scale(1.2);
+}
+
+.depth-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.depth-slider::-moz-range-thumb:hover {
+  background: #45a049;
+  transform: scale(1.2);
+}
+
+.direction-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.direction-btn {
+  padding: 12px;
+  background: #1a1a1a;
+  border: 2px solid #404040;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.direction-btn:hover {
+  background: #2d2d2d;
+  border-color: #4CAF50;
+}
+
+.direction-btn.active {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4CAF50;
+  color: #4CAF50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+}
+
+.preview-section {
+  margin-top: 20px;
+  padding: 16px;
+  background: #1a1a1a;
+  border: 1px solid #404040;
+  border-radius: 8px;
+}
+
+.preview-text {
+  margin: 0;
+  color: #ccc;
+  font-size: 14px;
+  text-align: center;
+}
+
+.dialog-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #404040;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background: #252525;
+}
+
+.cancel-btn,
+.extrude-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn {
+  background: #666;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background: #555;
+  transform: translateY(-1px);
+}
+
+.extrude-btn {
+  background: #4CAF50;
+  color: #fff;
+}
+
+.extrude-btn:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* スクロールバーのスタイル */
+.dialog-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dialog-content::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.dialog-content::-webkit-scrollbar-thumb {
+  background: #4CAF50;
+  border-radius: 4px;
+}
+
+.dialog-content::-webkit-scrollbar-thumb:hover {
+  background: #45a049;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .extrude-dialog {
+    width: 95%;
+  }
+
+  .dialog-header h3 {
+    font-size: 16px;
+  }
+
+  .direction-buttons {
+    grid-template-columns: 1fr;
+  }
+}

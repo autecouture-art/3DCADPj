@@ -6,10 +6,11 @@ interface SketchToolbarProps {
   currentTool: SketchTool;
   onToolChange: (tool: SketchTool) => void;
   onExit: () => void;
+  onExtrude: () => void;
   planeName: string;
 }
 
-const SketchToolbar = ({ currentTool, onToolChange, onExit, planeName }: SketchToolbarProps) => {
+const SketchToolbar = ({ currentTool, onToolChange, onExit, onExtrude, planeName }: SketchToolbarProps) => {
   return (
     <div className="sketch-toolbar">
       <div className="sketch-toolbar-left">
@@ -68,6 +69,19 @@ const SketchToolbar = ({ currentTool, onToolChange, onExit, planeName }: SketchT
       </div>
 
       <div className="sketch-toolbar-right">
+        <button
+          className="extrude-btn"
+          onClick={onExtrude}
+          title="押し出しボス/ベース"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <rect x="4" y="8" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M14 8 L20 4 L20 14 L14 18" fill="none" stroke="currentColor" strokeWidth="2" />
+            <line x1="14" y1="8" x2="20" y2="4" stroke="currentColor" strokeWidth="2" />
+          </svg>
+          <span>押し出し</span>
+        </button>
+
         <button
           className="exit-sketch-btn"
           onClick={onExit}

@@ -3,6 +3,8 @@ import { useAppStore } from '../../store/useAppStore';
 import { Point, SketchEntity, LineEntity, RectangleEntity, CircleEntity } from '../../types/sketch';
 import SketchToolbar from './SketchToolbar';
 import DimensionPanel from './DimensionPanel';
+import GeometricConstraintPanel from './GeometricConstraintPanel';
+import ExtrudeDialog from './ExtrudeDialog';
 import './SketchCanvas.css';
 
 type SketchTool = 'select' | 'line' | 'rectangle' | 'circle';
@@ -22,6 +24,7 @@ const SketchCanvas = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [startPoint, setStartPoint] = useState<Point | null>(null);
   const [currentPoint, setCurrentPoint] = useState<Point | null>(null);
+  const [showExtrudeDialog, setShowExtrudeDialog] = useState(false);
 
   // キャンバスのセットアップ
   useEffect(() => {
@@ -399,6 +402,7 @@ const SketchCanvas = () => {
         currentTool={currentTool}
         onToolChange={setCurrentTool}
         onExit={exitSketchMode}
+        onExtrude={() => setShowExtrudeDialog(true)}
         planeName={getPlaneName()}
       />
 
@@ -412,8 +416,16 @@ const SketchCanvas = () => {
         />
       </div>
 
+      {/* 幾何拘束パネル */}
+      <GeometricConstraintPanel />
+
       {/* 寸法パネル */}
       <DimensionPanel />
+
+      {/* 押し出しダイアログ */}
+      {showExtrudeDialog && (
+        <ExtrudeDialog onClose={() => setShowExtrudeDialog(false)} />
+      )}
 
       <div className="sketch-info">
         <div className="info-row">

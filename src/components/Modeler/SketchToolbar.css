@@ -89,6 +89,32 @@
   font-weight: 500;
 }
 
+.extrude-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #4CAF50;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.extrude-btn:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.extrude-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
 .exit-sketch-btn {
   display: flex;
   align-items: center;
