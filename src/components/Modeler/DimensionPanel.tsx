@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
-import { DimensionConstraint } from '../../types/sketch';
+import { DimensionConstraint, LineEntity, RectangleEntity, CircleEntity } from '../../types/sketch';
 import './DimensionPanel.css';
 
 const DimensionPanel = () => {
@@ -33,24 +33,29 @@ const DimensionPanel = () => {
   }
 
   const handleAddDimension = () => {
+    if (!selectedEntity) return;
+
     let dimensionType: DimensionConstraint['type'] = 'length';
     let defaultValue = 0;
     let label = '';
 
     if (selectedEntity.type === 'line') {
+      const lineEntity = selectedEntity as LineEntity;
       dimensionType = 'length';
-      const dx = selectedEntity.end.x - selectedEntity.start.x;
-      const dy = selectedEntity.end.y - selectedEntity.start.y;
+      const dx = lineEntity.end.x - lineEntity.start.x;
+      const dy = lineEntity.end.y - lineEntity.start.y;
       defaultValue = Math.sqrt(dx * dx + dy * dy);
       label = `L${entityDimensions.length + 1}`;
     } else if (selectedEntity.type === 'circle') {
+      const circleEntity = selectedEntity as CircleEntity;
       dimensionType = 'radius';
-      defaultValue = selectedEntity.radius;
+      defaultValue = circleEntity.radius;
       label = `R${entityDimensions.length + 1}`;
     } else if (selectedEntity.type === 'rectangle') {
+      const rectEntity = selectedEntity as RectangleEntity;
       // 矩形の場合、幅を寸法として追加
       dimensionType = 'length';
-      defaultValue = Math.abs(selectedEntity.end.x - selectedEntity.start.x);
+      defaultValue = Math.abs(rectEntity.end.x - rectEntity.start.x);
       label = `W${entityDimensions.length + 1}`;
     }
 

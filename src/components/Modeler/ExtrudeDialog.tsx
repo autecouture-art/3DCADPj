@@ -68,65 +68,92 @@ const ExtrudeDialog = ({ onClose }: ExtrudeDialogProps) => {
     // 2Dシェイプを作成
     const shape = new THREE.Shape();
 
+    // スケール調整係数
+    const scale = 0.02; // キャンバス座標からワールド座標への変換
+
     // 矩形の押し出し
     const rectangles = sketchEntities.filter(e => e.type === 'rectangle') as RectangleEntity[];
     if (rectangles.length > 0) {
       const rect = rectangles[0];
-      const width = Math.abs(rect.end.x - rect.start.x) / 50; // スケール調整
-      const height = Math.abs(rect.end.y - rect.start.y) / 50;
+      const width = Math.abs(rect.end.x - rect.start.x) * scale;
+      const height = Math.abs(rect.end.y - rect.start.y) * scale;
 
-      shape.moveTo(0, 0);
-      shape.lineTo(width, 0);
-      shape.lineTo(width, height);
-      shape.lineTo(0, height);
-      shape.lineTo(0, 0);
+      // 中心を原点に
+      shape.moveTo(-width / 2, -height / 2);
+      shape.lineTo(width / 2, -height / 2);
+      shape.lineTo(width / 2, height / 2);
+      shape.lineTo(-width / 2, height / 2);
+      shape.lineTo(-width / 2, -height / 2);
 
-      const depth = extrudeDepth / 10;
+      const depth = Math.abs(extrudeDepth / 10);
       const extrudeSettings = {
-        depth: extrudeDirection === 'positive' ? depth : -depth,
+        depth: depth,
         bevelEnabled: false
       };
 
-      return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+
+      // 負方向の場合は回転
+      if (extrudeDirection === 'negative') {
+        geometry.rotateY(Math.PI);
+      }
+
+      return geometry;
     }
 
     // 円の押し出し
     const circles = sketchEntities.filter(e => e.type === 'circle') as CircleEntity[];
     if (circles.length > 0) {
       const circle = circles[0];
-      const radius = circle.radius / 50; // スケール調整
+      const radius = circle.radius * scale;
 
       const circleShape = new THREE.Shape();
       circleShape.absarc(0, 0, radius, 0, Math.PI * 2, false);
 
-      const depth = extrudeDepth / 10;
+      const depth = Math.abs(extrudeDepth / 10);
       const extrudeSettings = {
-        depth: extrudeDirection === 'positive' ? depth : -depth,
+        depth: depth,
         bevelEnabled: false
       };
 
-      return new THREE.ExtrudeGeometry(circleShape, extrudeSettings);
+      const geometry = new THREE.ExtrudeGeometry(circleShape, extrudeSettings);
+
+      // 負方向の場合は回転
+      if (extrudeDirection === 'negative') {
+        geometry.rotateY(Math.PI);
+      }
+
+      return geometry;
     }
 
     // 線分から閉じたパスを作成
     const lines = sketchEntities.filter(e => e.type === 'line') as LineEntity[];
     if (lines.length >= 3) {
+      const scale = 0.02;
+
       // 簡易的な実装: 最初の線分から開始
       const firstLine = lines[0];
-      shape.moveTo(firstLine.start.x / 50, firstLine.start.y / 50);
+      shape.moveTo(firstLine.start.x * scale, firstLine.start.y * scale);
 
       lines.forEach(line => {
-        shape.lineTo(line.end.x / 50, line.end.y / 50);
+        shape.lineTo(line.end.x * scale, line.end.y * scale);
       });
 
-      const depth = extrudeDepth / 10;
+      const depth = Math.abs(extrudeDepth / 10);
       const extrudeSettings = {
-        depth: extrudeDirection === 'positive' ? depth : -depth,
+        depth: depth,
         bevelEnabled: false
       };
 
       try {
-        return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+
+        // 負方向の場合は回転
+        if (extrudeDirection === 'negative') {
+          geometry.rotateY(Math.PI);
+        }
+
+        return geometry;
       } catch (e) {
         console.error('押し出しエラー:', e);
         return null;
