@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { ToolMode, CADObject, CADFile } from '../types';
 
+type PlaneType = 'front' | 'top' | 'right' | null;
+
 interface AppState {
   mode: ToolMode;
   objects: CADObject[];
@@ -8,6 +10,11 @@ interface AppState {
   loadedFile: CADFile | null;
   gridVisible: boolean;
   axesVisible: boolean;
+
+  // SOLIDWORKSライクなスケッチモード
+  isSketchMode: boolean;
+  selectedPlane: PlaneType;
+  sketchEntities: any[];
 
   setMode: (mode: ToolMode) => void;
   addObject: (object: CADObject) => void;
@@ -18,6 +25,12 @@ interface AppState {
   toggleGrid: () => void;
   toggleAxes: () => void;
   clearScene: () => void;
+
+  // スケッチモード関連
+  enterSketchMode: (plane: PlaneType) => void;
+  exitSketchMode: () => void;
+  addSketchEntity: (entity: any) => void;
+  clearSketch: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -27,6 +40,11 @@ export const useAppStore = create<AppState>((set) => ({
   loadedFile: null,
   gridVisible: true,
   axesVisible: true,
+
+  // スケッチモード初期状態
+  isSketchMode: false,
+  selectedPlane: null,
+  sketchEntities: [],
 
   setMode: (mode) => set({ mode }),
 
@@ -53,5 +71,23 @@ export const useAppStore = create<AppState>((set) => ({
 
   toggleAxes: () => set((state) => ({ axesVisible: !state.axesVisible })),
 
-  clearScene: () => set({ objects: [], selectedObjectId: null })
+  clearScene: () => set({ objects: [], selectedObjectId: null }),
+
+  // スケッチモード関連
+  enterSketchMode: (plane) => set({
+    isSketchMode: true,
+    selectedPlane: plane,
+    sketchEntities: []
+  }),
+
+  exitSketchMode: () => set({
+    isSketchMode: false,
+    selectedPlane: null
+  }),
+
+  addSketchEntity: (entity) => set((state) => ({
+    sketchEntities: [...state.sketchEntities, entity]
+  })),
+
+  clearSketch: () => set({ sketchEntities: [] })
 }));

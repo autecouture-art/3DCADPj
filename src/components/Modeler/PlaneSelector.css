@@ -1,0 +1,132 @@
+.plane-selector {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(45, 45, 45, 0.98);
+  border: 2px solid #4CAF50;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  min-width: 600px;
+}
+
+.plane-selector-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.plane-selector-header h3 {
+  font-size: 24px;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.plane-selector-header p {
+  font-size: 14px;
+  color: #aaa;
+  margin: 0;
+}
+
+.plane-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.plane-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  background: #2d2d2d;
+  border: 2px solid #404040;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.plane-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.plane-btn.front-plane {
+  border-color: #4CAF50;
+}
+
+.plane-btn.front-plane:hover {
+  background: rgba(76, 175, 80, 0.1);
+  border-color: #4CAF50;
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+}
+
+.plane-btn.top-plane {
+  border-color: #2196F3;
+}
+
+.plane-btn.top-plane:hover {
+  background: rgba(33, 150, 243, 0.1);
+  border-color: #2196F3;
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.3);
+}
+
+.plane-btn.right-plane {
+  border-color: #FF9800;
+}
+
+.plane-btn.right-plane:hover {
+  background: rgba(255, 152, 0, 0.1);
+  border-color: #FF9800;
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+}
+
+.plane-icon {
+  margin-bottom: 12px;
+}
+
+.plane-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.plane-subtitle {
+  font-size: 12px;
+  color: #888;
+  font-style: italic;
+}
+
+.plane-selector-footer {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid #404040;
+}
+
+.hint-text {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .plane-selector {
+    min-width: auto;
+    width: 90%;
+    padding: 20px;
+  }
+
+  .plane-buttons {
+    flex-direction: column;
+  }
+
+  .plane-btn {
+    min-width: auto;
+  }
+}

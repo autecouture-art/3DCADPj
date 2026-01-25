@@ -3,15 +3,20 @@ import { OrbitControls, Grid } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 import ModelingToolbar from './ModelingToolbar';
+import PlaneSelector from './PlaneSelector';
 import SceneObjects from '../Viewer/SceneObjects';
 import './Modeler.css';
 
 const Modeler = () => {
-  const { gridVisible, axesVisible } = useAppStore();
+  const { gridVisible, axesVisible, isSketchMode } = useAppStore();
 
   return (
     <div className="modeler">
-      <ModelingToolbar />
+      {/* スケッチモード時はスケッチツールバー、それ以外は通常のツールバー */}
+      {!isSketchMode && <ModelingToolbar />}
+
+      {/* 平面選択ダイアログ（スケッチモードでない時のみ） */}
+      <PlaneSelector />
 
       <Canvas
         camera={{ position: [5, 5, 5], fov: 50 }}
