@@ -1,0 +1,146 @@
+.sketch-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #2d2d2d;
+  border-bottom: 2px solid #4CAF50;
+  gap: 20px;
+}
+
+.sketch-toolbar-left,
+.sketch-toolbar-center,
+.sketch-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sketch-toolbar-center {
+  flex: 1;
+  justify-content: center;
+}
+
+.plane-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid #4CAF50;
+  border-radius: 6px;
+}
+
+.plane-icon {
+  font-size: 20px;
+}
+
+.plane-name {
+  color: #4CAF50;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.sketch-tools {
+  display: flex;
+  gap: 8px;
+  background: #1a1a1a;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #404040;
+}
+
+.sketch-tool-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 16px;
+  background: #2d2d2d;
+  border: 2px solid #404040;
+  border-radius: 6px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 70px;
+}
+
+.sketch-tool-btn:hover {
+  background: #353535;
+  border-color: #4CAF50;
+  color: #4CAF50;
+  transform: translateY(-2px);
+}
+
+.sketch-tool-btn.active {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4CAF50;
+  color: #4CAF50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.sketch-tool-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.sketch-tool-btn span {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.exit-sketch-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #d32f2f;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.exit-sketch-btn:hover {
+  background: #f44336;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+.exit-sketch-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .sketch-toolbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .sketch-toolbar-left,
+  .sketch-toolbar-center,
+  .sketch-toolbar-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .sketch-tools {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .sketch-tool-btn {
+    min-width: 60px;
+    padding: 8px 12px;
+  }
+
+  .sketch-tool-btn span {
+    font-size: 10px;
+  }
+}
