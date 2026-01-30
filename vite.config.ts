@@ -3,10 +3,11 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/3DCADPj/',
+  base: process.env.NODE_ENV === 'production' ? '/3DCADPj/' : '/',
   server: {
     port: 3000,
-    host: true
+    host: '0.0.0.0',
+    strictPort: true
   },
   build: {
     outDir: 'dist',
