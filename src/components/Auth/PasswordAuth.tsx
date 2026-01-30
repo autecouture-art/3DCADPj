@@ -10,7 +10,7 @@ const PasswordAuth = ({ onAuthenticated }: PasswordAuthProps) => {
   const [error, setError] = useState('');
 
   // パスワード（変更可能）
-  const CORRECT_PASSWORD = 'cad2024';
+  const CORRECT_PASSWORD = '1203NANA';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
